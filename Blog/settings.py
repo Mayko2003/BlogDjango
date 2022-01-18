@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'apps.blog',
     'import_export',
     'ckeditor',
-    'bootstrap4',
+    'django_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -146,7 +146,3 @@ CKEDITOR_CONFIGS = {
 }
 
 # BOOTSTRAP CONFIG
-
-BOOTSTRAP4 = {
-    'include_jquery' : 'full',
-}

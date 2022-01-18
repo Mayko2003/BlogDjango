@@ -1,0 +1,34 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block titulo %}
+    {{ post.titulo }}
+{% endblock %}
+
+{% block header_imagen %}
+    {{ post.imagen_portada }}
+{% endblock header_imagen %}
+
+{% block header_title %}
+    {{ post.titulo }}
+{% endblock header_title %}
+
+{% block header_desc %}
+    {{ post.descripcion }}
+{% endblock header_desc %}
+
+{% block header_creador %}
+    Escrito por <strong><a href="#" class = "text-white">{{ post.creador }}</a></strong>
+{% endblock header_creador %}
+
+{% block main %}
+    <article class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    {{ post.contenido | safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock main %}

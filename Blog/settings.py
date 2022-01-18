@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.blog',
     'import_export',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# CKEDITOR CONFIG
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar' : 'full',
+    }
+}

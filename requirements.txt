@@ -1,2 +1,3 @@
 django-import-export
 django-ckeditor
+django-bootstrap4

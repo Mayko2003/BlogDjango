@@ -15,6 +15,7 @@ class Categoria(models.Model):
         verbose_name = 'Categoria'
         verbose_name_plural = 'Categorias'
         db_table = 'categorias'
+        ordering = ['nombre']
 
     def __str__(self):
         return self.nombre
@@ -38,6 +39,7 @@ class Usuario(models.Model):
         verbose_name = 'Usuario'
         verbose_name_plural = 'Usuarios'
         db_table = 'usuarios'
+        ordering = ['nombre_usuario']
 
     def __str__(self):
         return self.nombre_usuario
@@ -63,6 +65,7 @@ class Post(models.Model):
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
         db_table = 'posts'
+        ordering = ['-fecha_creacion']
 
     def __str__(self):
         return self.titulo

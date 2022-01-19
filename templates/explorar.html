@@ -1,0 +1,110 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block titulo %}
+Explorar
+{% endblock titulo %}
+
+{% block header_imagen %}
+{% static 'assets/img/explorar-bg.jpg' %}
+{% endblock header_imagen %}
+
+{% block main %}
+
+<div class="row ms-auto me-auto">
+    <div class="col-sm-12 col-md-4">
+        <form method="get" class="mb-4" id="form-filtro">
+            <div class="row d-flex justify-content-center">
+                <div class="row mb-2">
+                    <div class="col-sm-12 col-md-10">
+                        <h6 class="text-secondary">Buscar Por: </h6>
+                        <input class="form-control" type="text" placeholder="Ingrese una palabra para filtrar..." name="filtrar_post" id="filtrar_post" value="{{ request.GET.filtrar_post }}">
+                    </div>
+                </div>
+                <div class="row mb-2 my-2">
+                    <div class="col-sm-12 col-md-10">
+                        <h6 class="text-secondary">Ordenar Por: </h6>
+                        <select class="form-select" name="orden_por">
+                            <option value="creador">Creador</option>
+                            <option value="fecha_creacion" selected>Fecha de creacion</option>
+                            <option value="titulo">Titulo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row my-2 mb-2">
+                    <div class="col-sm-12 col-md-10">
+                        <h6 class="text-secondary">Orden: </h6>
+                        <select class="form-select" name="orden">
+                            <option value="">Ascendente</option>
+                            <option value="-" selected>Descendente</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row my-2 mb-2">
+                    <div class="col-sm-12 col-md-10">
+                        <h6 class="text-secondary">Seleecionar categorias: </h6>
+                        <div class="row">
+                            {% for index,categoria in indices_categorias %}
+                            <div class="col-6 d-flex align-items-center">
+                                <input type="checkbox" class="form-check-label col-3" name="cat-{{index}}"
+                                    id="{{index}}" value="{{categoria.nombre}}">
+                                <label class="form-check-label col-3" for="{{index}}">{{categoria.nombre}}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row my-2">
+                    <div class="col-sm-12 col-md-10">
+                        <button type="submit" class="btn btn-success">Filtrar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-12 col-md-8">
+        <div class="row d-flex justify-content-center">
+            <div class="row">
+                {% if posts %}
+                    {% for post in posts %}
+                        <div class="post-preview">
+                            <a href="ver-post/{{ post.slug }}">
+                                <h2 class="post-title">{{ post.titulo }}</h2>
+                                {% for categoria in post.categorias.all %}
+                                    <i class="fas fa-tag" style="color: cadetblue"></i>{{categoria.nombre}}
+                                {% endfor %}
+                                <h3 class="post-subtitle">{{ post.descripcion }}</h3>
+                            </a>
+                            <p class="post-meta">
+                                Escrito por
+                                <strong><a href="#!">{{ post.creador }}</a></strong>
+                                el {{ post.fecha_creacion }}
+                            </p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-sm-12 col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">No se encontraron posts</h3>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="d-flex">
+                    {% if posts.has_previous %}
+                        <div class="me-auto mb-4">
+                            <a class="btn btn-primary text-uppercase" href="?page={{ posts.previous_page_number }}">←Anterior</a>
+                        </div>
+                    {% endif %}
+                    {% if posts.has_next %}
+                        <div class="ms-auto mb-4" >
+                            <a class="btn btn-primary text-uppercase" href="?page={{posts.next_page_number}}">Siguiente→</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}

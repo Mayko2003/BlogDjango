@@ -46,12 +46,12 @@
                                   Explorar
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                  <li><a class="dropdown-item" href="#">General</a></li>
-                                  <li><a class="dropdown-item" href="#">Tecnologia</a></li>
-                                  <li><a class="dropdown-item" href="#">Medio Ambiente</a></li>
-                                  <li><a class="dropdown-item" href="#">Politica</a></li>
+                                  <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}">General</a></li>
+                                  <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}">Tecnologia</a></li>
+                                  <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}">Medio Ambiente</a></li>
+                                  <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}">Politica</a></li>
                                   <li><hr class="dropdown-divider"></li>
-                                  <li><a class="dropdown-item" href="#">Ver Mas</a></li>
+                                  <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}#form-filtro">Ver Mas</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'blog_urls:contact' %}#contact">Contact</a></li>
@@ -75,11 +75,11 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12 search">
-                                <form method="get">
+                                <form action="{% url 'blog_urls:home' %}" method="get">
                                     <div class="custom-search-imput">
                                         <div class="input-group col-md-12">
                                             <input class="form-control" type="text" placeholder="Ingrese una palabra..." name="buscar_post" id="buscar_post" value="{{ request.GET.buscar_post }}">
-                                            <input type="submit" value="Buscar" class=" btn btn-success">
+                                            <input type="submit" value="Buscar" class="ms-2 btn btn-success">
                                         </div>
                                     </div>
                                 </form>
@@ -107,7 +107,7 @@
                                     </a>
                                     <p class="post-meta">
                                         Escrito por
-                                        <strong><a href="#">{{ post.creador }}</a></strong>
+                                        <strong><a href="#!">{{ post.creador }}</a></strong>
                                         el {{ post.fecha_creacion }}
                                     </p>
                                 </div>

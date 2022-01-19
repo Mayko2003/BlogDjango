@@ -49,7 +49,7 @@ class Post(models.Model):
     id = models.AutoField(primary_key=True)
     titulo = models.CharField(
         'Titulo', max_length=100, blank=False, null=False)
-    slug = models.CharField('Slug', max_length=100, blank=False, null=False)
+    slug = models.CharField('Slug', max_length=100, blank=False, null=False, unique=True)
     descripcion = models.CharField(
         'Descripcion', max_length=150, blank=False, null=False)
     imagen_portada = models.URLField(

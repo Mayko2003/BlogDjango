@@ -17,16 +17,16 @@ Explorar
                 <div class="row mb-2">
                     <div class="col-sm-12 col-md-10">
                         <h6 class="text-secondary">Buscar Por: </h6>
-                        <input class="form-control" type="text" placeholder="Ingrese una palabra para filtrar..." name="filtrar_post" id="filtrar_post" value="{{ request.GET.filtrar_post }}">
+                        <input class="form-control" type="text" placeholder="Ingrese una palabra para filtrar..." name="buscar_filtro" id="buscar_filtro" value="{{ request.GET.buscar_filtro }}">
                     </div>
                 </div>
                 <div class="row mb-2 my-2">
                     <div class="col-sm-12 col-md-10">
                         <h6 class="text-secondary">Ordenar Por: </h6>
                         <select class="form-select" name="orden_por">
-                            <option value="creador">Creador</option>
-                            <option value="fecha_creacion" selected>Fecha de creacion</option>
-                            <option value="titulo">Titulo</option>
+                            <option value="fecha_creacion" {% if request.GET.orden_por == "fecha_creacion" %} selected {% endif %}>Fecha de creacion</option>
+                            <option value="creador" {% if request.GET.orden_por == "creador" %} selected {% endif %} >Creador</option>
+                            <option value="titulo" {% if request.GET.orden_por == "titulo" %} selected {% endif %}>Titulo</option>
                         </select>
                     </div>
                 </div>
@@ -34,8 +34,8 @@ Explorar
                     <div class="col-sm-12 col-md-10">
                         <h6 class="text-secondary">Orden: </h6>
                         <select class="form-select" name="orden">
-                            <option value="">Ascendente</option>
-                            <option value="-" selected>Descendente</option>
+                            <option value="-" {% if request.GET.orden == "-" %}selected {% endif %}>Descendente</option>
+                            <option value="" {% if request.GET.orden == "" %}selected{% endif %}>Ascendente</option>
                         </select>
                     </div>
                 </div>
@@ -43,11 +43,12 @@ Explorar
                     <div class="col-sm-12 col-md-10">
                         <h6 class="text-secondary">Seleecionar categorias: </h6>
                         <div class="row">
-                            {% for index,categoria in indices_categorias %}
+                            {% for categoria in categorias %}
                             <div class="col-6 d-flex align-items-center">
-                                <input type="checkbox" class="form-check-label col-3" name="cat-{{index}}"
-                                    id="{{index}}" value="{{categoria.nombre}}">
-                                <label class="form-check-label col-3" for="{{index}}">{{categoria.nombre}}</label>
+                                <input type="checkbox" class="form-check-label col-3" name="filter_cats"
+                                    id="{{categoria.nombre}}" value="{{categoria.nombre}}"
+                                {% if categoria.nombre in selec_cats %} checked {% endif %}>
+                                <label class="form-check-label col-3" for="{{categoria.nombre}}">{{categoria.nombre}}</label>
                             </div>
                             {% endfor %}
                         </div>
@@ -93,12 +94,12 @@ Explorar
                 <div class="d-flex">
                     {% if posts.has_previous %}
                         <div class="me-auto mb-4">
-                            <a class="btn btn-primary text-uppercase" href="?page={{ posts.previous_page_number }}">←Anterior</a>
+                            <a id="prevFilter" class="btn btn-primary text-uppercase" href="?page={{ posts.previous_page_number }}">←Anterior</a>
                         </div>
                     {% endif %}
                     {% if posts.has_next %}
                         <div class="ms-auto mb-4" >
-                            <a class="btn btn-primary text-uppercase" href="?page={{posts.next_page_number}}">Siguiente→</a>
+                            <a id="nextFilter" class="btn btn-primary text-uppercase" href="?page={{posts.next_page_number}}">Siguiente→</a>
                         </div>
                     {% endif %}
                 </div>

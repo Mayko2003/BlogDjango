@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% load static %}
+{% load blog_extras %}
 {% block titulo %}
 Explorar
 {% endblock titulo %}
@@ -94,14 +95,15 @@ Explorar
                 <div class="d-flex">
                     {% if posts.has_previous %}
                         <div class="me-auto mb-4">
-                            <a id="prevFilter" class="btn btn-primary text-uppercase" href="?page={{ posts.previous_page_number }}">←Anterior</a>
+                            <a class="btn btn-primary text-uppercase" href="{{ request.get_full_path|prev_page:posts.previous_page_number }}#form-filtro">←Anterior</a>
                         </div>
                     {% endif %}
                     {% if posts.has_next %}
                         <div class="ms-auto mb-4" >
-                            <a id="nextFilter" class="btn btn-primary text-uppercase" href="?page={{posts.next_page_number}}">Siguiente→</a>
+                            <a class="btn btn-primary text-uppercase" href="{{ request.get_full_path|next_page:posts.next_page_number }}#form-filtro">Siguiente→</a>
                         </div>
                     {% endif %}
+                    
                 </div>
             </div>
         </div>

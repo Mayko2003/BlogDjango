@@ -49,7 +49,7 @@ def explorar(request):
         ).distinct()
     
     # si hay parametros se realiza el filtro
-    if len(items) > 1:
+    if items:
         orden_por = request.GET.get("orden_por")
         orden = request.GET.get("orden")
         categorias = list()

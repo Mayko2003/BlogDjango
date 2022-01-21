@@ -1,5 +1,6 @@
 {% load static %}
 {% load django_bootstrap5 %}
+{% load blog_extras %}
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -46,12 +47,12 @@
                                   Explorar
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                  <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}">General</a></li>
-                                  <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}">Tecnologia</a></li>
-                                  <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}">Medio Ambiente</a></li>
-                                  <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}">Politica</a></li>
+                                  <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}?filter_cats=General#seccion-filtro">General</a></li>
+                                  <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}?filter_cats=Tecnologia#seccion-filtro">Tecnologia</a></li>
+                                  <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}?filter_cats=Medio+Ambiente#seccion-filtro">Medio Ambiente</a></li>
+                                  <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}?filter_cats=Politica#seccion-filtro">Politica</a></li>
                                   <li><hr class="dropdown-divider"></li>
-                                  <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}#form-filtro">Ver Mas</a></li>
+                                  <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}#seccion-filtro">Ver Mas</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'blog_urls:contact' %}#contact">Contact</a></li>
@@ -75,7 +76,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12 search">
-                                <form action="{% url 'blog_urls:home' %}" method="get">
+                                <form action="{% url 'blog_urls:home' %}#home-posts" method="get">
                                     <div class="custom-search-imput">
                                         <div class="input-group col-md-12">
                                             <input class="form-control" type="text" placeholder="Ingrese una palabra..." name="buscar_post" id="buscar_post" value="{{ request.GET.buscar_post }}">
@@ -94,7 +95,7 @@
 
         <!-- Main Content-->
         {% block main %}
-            <div class="container px-4 px-lg-5">
+            <div class="container px-4 px-lg-5" id="home-posts">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <!-- Post preview-->
@@ -103,6 +104,9 @@
                                 <div class="post-preview">
                                     <a href="ver-post/{{ post.slug }}">
                                         <h2 class="post-title">{{ post.titulo }}</h2>
+                                        {% for categoria in post.categorias.all %}
+                                            <i class="fas fa-tag" style="color: cadetblue"></i>{{categoria.nombre}}
+                                        {% endfor %}
                                         <h3 class="post-subtitle">{{ post.descripcion }}</h3>
                                     </a>
                                     <p class="post-meta">
@@ -121,12 +125,12 @@
                         <div class="d-flex">
                             {% if posts.has_previous %}
                                 <div class="me-auto mb-4">
-                                    <a class="btn btn-primary text-uppercase" href="?page={{ posts.previous_page_number }}{% if request.GET.buscar_post %}&buscar_post={{ request.GET.buscar_post }}{% endif %}">←Anterior</a>
+                                    <a class="btn btn-primary text-uppercase" href="{{ request.get_full_path|prev_page:posts.previous_page_number }}#home-posts">←Anterior</a>
                                 </div>
                             {% endif %}
                             {% if posts.has_next %}
                                 <div class="ms-auto mb-4" >
-                                    <a class="btn btn-primary text-uppercase" href="?page={{posts.next_page_number}}{% if request.GET.buscar_post %}&buscar_post={{ request.GET.buscar_post }}{% endif %}">Siguiente→</a>
+                                    <a class="btn btn-primary text-uppercase" href="{{ request.get_full_path|next_page:posts.next_page_number }}#home-posts">Siguiente→</a>
                                 </div>
                             {% endif %}
                             

@@ -12,7 +12,8 @@ def home(request):
     if query:
         posts = Post.objects.filter(
             Q(titulo__icontains=query) |
-            Q(descripcion__icontains=query)
+            Q(descripcion__icontains=query) |
+            Q(creador__nombre_usuario=query)
         ).distinct()
     paginator = Paginator(posts, 3)
     page = request.GET.get('page')

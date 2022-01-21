@@ -11,9 +11,9 @@ Explorar
 
 {% block main %}
 
-<div class="row ms-auto me-auto">
+<div class="row ms-auto me-auto" id="seccion-filtro">
     <div class="col-sm-12 col-md-4">
-        <form method="get" class="mb-4" id="form-filtro">
+        <form method="get" class="mb-4">
             <div class="row d-flex justify-content-center">
                 <div class="row mb-2">
                     <div class="col-sm-12 col-md-10">
@@ -95,12 +95,12 @@ Explorar
                 <div class="d-flex">
                     {% if posts.has_previous %}
                         <div class="me-auto mb-4">
-                            <a class="btn btn-primary text-uppercase" href="{{ request.get_full_path|prev_page:posts.previous_page_number }}#form-filtro">←Anterior</a>
+                            <a class="btn btn-primary text-uppercase" href="{{ request.get_full_path|prev_page:posts.previous_page_number }}#seccion-filtro">←Anterior</a>
                         </div>
                     {% endif %}
                     {% if posts.has_next %}
                         <div class="ms-auto mb-4" >
-                            <a class="btn btn-primary text-uppercase" href="{{ request.get_full_path|next_page:posts.next_page_number }}#form-filtro">Siguiente→</a>
+                            <a class="btn btn-primary text-uppercase" href="{{ request.get_full_path|next_page:posts.next_page_number }}#seccion-filtro">Siguiente→</a>
                         </div>
                     {% endif %}
                     

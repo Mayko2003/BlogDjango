@@ -3,9 +3,9 @@ from .views import *
 
 
 urlpatterns = [
-    path('', home, name = 'home'),
-    path('about', about, name = 'about'),
-    path('contact', contact, name = 'contact'),
-    path('ver-post/<slug:slug>', ver_post, name = 'ver_post'),
-    path('explorar', explorar, name = 'explorar'),
+    path('', Home.as_view(), name = 'home'),
+    path('about', About.as_view(), name = 'about'),
+    path('contact', Contact.as_view(), name = 'contact'),
+    path('ver-post/<slug:slug>', VerPost.as_view(), name = 'ver_post'),
+    path('explorar', Explorar.as_view(), name = 'explorar'),
 ]

@@ -13,20 +13,19 @@ class Home(ListView):
     queryset = Post.objects.filter(estado=True)
     paginate_by = 3
     page_kwarg = 'page'
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_queryset(self):
+        # se obtiene el queryset por defecto
+        query = super().get_queryset()
+        # se obtiene el parametro de busqueda
         buscar_p = self.request.GET.get('buscar_post')
+        # se realiza el filtro de busqueda si es que existe el parametro
         if buscar_p:
-            query = self.get_queryset().filter(
+            query = query.filter(
                 Q(titulo__icontains=buscar_p) |
                 Q(descripcion__icontains=buscar_p) |
                 Q(creador__nombre_usuario=buscar_p)
             ).distinct()
-            new_context = self.paginate_queryset(query, self.paginate_by)
-            context['paginator'] = new_context[0]
-            context['page_obj'] = new_context[1]
-            context['posts'] = new_context[2]
-        return context
+        return query
 
 class About(TemplateView):
     template_name = 'about.html'
@@ -47,9 +46,9 @@ class Explorar(ListView):
     paginate_by = 3
     page_kwarg = 'page' 
     
-    def get_context_data(self, **kwargs):
+    def get_queryset(self):
         # se obtiene el queryset por defecto
-        query = self.get_queryset()
+        query = super().get_queryset()
         # se realiza el filtro por una palabra
         buscar_p = self.request.GET.get('buscar_filtro')
         if buscar_p:
@@ -68,13 +67,9 @@ class Explorar(ListView):
         orden_p = self.request.GET.get('orden')
         if orden_p != None and orden_por_p:
             query = query.order_by(orden_p + orden_por_p)
-        # se crea un nuevo contexto(en forma de tupla) paginando el queryset nuevo
-        new_context = self.paginate_queryset(query, self.paginate_by)
-        # se establece todo el contexto para el template
-        context = dict()
-        context['paginator'] = new_context[0]
-        context['page_obj'] = new_context[1]
-        context['posts'] = new_context[2]
+        return query
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context['categorias'] = Categoria.objects.all()
-        context['selec_cats'] = categorias_filter
+        context['selec_cats'] = self.request.GET.getlist('filter_cats')
         return context

@@ -124,14 +124,14 @@
                         <hr class="my-4" />
                         <!-- Pager-->
                         <div class="d-flex">
-                            {% if posts.has_previous %}
+                            {% if page_obj.has_previous %}
                                 <div class="me-auto mb-4">
-                                    <a class="btn btn-primary text-uppercase" href="{{ request.get_full_path|prev_page:posts.previous_page_number }}#home-posts">←Anterior</a>
+                                    <a class="btn btn-primary text-uppercase" href="{{ request.get_full_path|prev_page:page_obj.previous_page_number }}#home-posts">←Anterior</a>
                                 </div>
                             {% endif %}
-                            {% if posts.has_next %}
+                            {% if page_obj.has_next %}
                                 <div class="ms-auto mb-4" >
-                                    <a class="btn btn-primary text-uppercase" href="{{ request.get_full_path|next_page:posts.next_page_number }}#home-posts">Siguiente→</a>
+                                    <a class="btn btn-primary text-uppercase" href="{{ request.get_full_path|next_page:page_obj.next_page_number }}#home-posts">Siguiente→</a>
                                 </div>
                             {% endif %}
                             

@@ -145,7 +145,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar' : 'full',
+        'width': '100%',
     }
 }
 
-# BOOTSTRAP CONFIG
+AUTH_USER_MODEL = 'blog.Usuario'

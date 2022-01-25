@@ -44,10 +44,10 @@
                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'blog_urls:home' %}">Home</a></li>
                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'blog_urls:about' %}#about">About</a></li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle px-lg-3 py-3 py-lg-4" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle px-lg-3 py-3 py-lg-4" href="#" id="explorarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                   Explorar
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <ul class="dropdown-menu" aria-labelledby="explorarDropdown">
                                   <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}?filter_cats=General#seccion-filtro">General</a></li>
                                   <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}?filter_cats=Tecnologia#seccion-filtro">Tecnologia</a></li>
                                   <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}?filter_cats=Medio+Ambiente#seccion-filtro">Medio Ambiente</a></li>
@@ -56,7 +56,22 @@
                                   <li><a class="dropdown-item" href="{% url 'blog_urls:explorar' %}#seccion-filtro">Ver Mas</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'blog_urls:contact' %}#contact">Contact</a></li>
+                            {% if user.is_authenticated %}
+                                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'blog_urls:contact' %}#contact">Contact</a></li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle px-lg-3 py-3 py-lg-4" href="#" id="menuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Menu Opciones
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="menuDropdown">
+                                        <li><a class="dropdown-item" href="{% url 'blog_urls:crear_post' %}#form-crear">Crear Post</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="{% url 'login_urls:logout' %}">Cerrar Sesion</a></li>
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'login_urls:login' %}">Iniciar Sesion</a></li>
+                                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'login_urls:registrar' %}">Registrarse</a></li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
@@ -74,20 +89,22 @@
                             <p>{% block header_creador%}{% endblock header_creador%}</p>
                         </div>
                     </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-12 search">
-                                <form action="{% url 'blog_urls:home' %}#home-posts" method="get">
-                                    <div class="custom-search-imput">
-                                        <div class="input-group col-md-12">
-                                            <input class="form-control" type="text" placeholder="Ingrese una palabra..." name="buscar_post" id="buscar_post" value="{{ request.GET.buscar_post }}">
-                                            <input type="submit" value="Buscar" class="ms-2 btn btn-success">
+                    {% block barra_busqueda %}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12 search">
+                                    <form action="{% url 'blog_urls:home' %}#home-posts" method="get">
+                                        <div class="custom-search-imput">
+                                            <div class="input-group col-md-12">
+                                                <input class="form-control" type="text" placeholder="Ingrese una palabra..." name="buscar_post" id="buscar_post" value="{{ request.GET.buscar_post }}">
+                                                <input type="submit" value="Buscar" class="ms-2 btn btn-success">
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    {% endblock barra_busqueda %}
                 </div>
             </div>
         </header>
@@ -96,26 +113,30 @@
 
         <!-- Main Content-->
         {% block main %}
-            <div class="container px-4 px-lg-5" id="home-posts">
-                <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="container " id="home-posts">
+                <div class="row justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <!-- Post preview-->
                         {% if posts %}
                             {% for post in posts %}
-                                <div class="post-preview">
-                                    <a href="ver-post/{{ post.slug }}">
-                                        <h2 class="post-title">{{ post.titulo }}</h2>
-                                        {% for categoria in post.categorias.all %}
-                                            <i class="fas fa-tag" style="color: cadetblue"></i>{{categoria.nombre}}
-                                        {% endfor %}
-                                        <h3 class="post-subtitle">{{ post.descripcion }}</h3>
-                                    </a>
-                                    <p class="post-meta">
-                                        Escrito por
-                                        <strong><a href="#!">{{ post.creador }}</a></strong>
-                                        el {{ post.fecha_creacion }}
-                                    </p>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <div class="post-preview">
+                                        <a href="ver-post/{{ post.slug }}">
+                                            <h2 class="post-title">{{ post.titulo }}</h2>
+                                            {% for categoria in post.categorias.all %}
+                                                <i class="fas fa-tag" style="color: cadetblue"></i>{{categoria.nombre}}
+                                            {% endfor %}
+                                            <h3 class="post-subtitle">{{ post.descripcion }}</h3>
+                                        </a>
+                                        <p class="post-meta">
+                                            Escrito por
+                                            <strong><a href="#!">{{ post.creador }}</a></strong>
+                                            el {{ post.fecha_creacion }}
+                                        </p>
+                                    </div>
                                 </div>
+                            </div>
                             {% endfor %}
                         {% else %}
                             <h1>No se encontraron posts</h1>

@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block titulo %}
+    Registrate!
+{% endblock titulo %}
+
+
+{% block main %}
+    <div class="container mb-4" >
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form method="post" id="form-registrarse">
+                    {% csrf_token %}
+                    {{ form.errors }}
+                    {{ form.as_p }}
+                    <input type="submit" class="btn btn-success" value="Registrarse">
+                </form>
+            </div>
+        </div>
+    <div>
+{% endblock main %}

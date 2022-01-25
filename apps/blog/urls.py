@@ -8,4 +8,5 @@ urlpatterns = [
     path('contact', Contact.as_view(), name = 'contact'),
     path('ver-post/<slug:slug>', VerPost.as_view(), name = 'ver_post'),
     path('explorar', Explorar.as_view(), name = 'explorar'),
+    path('crear-post', CrearPost.as_view(), name = 'crear_post'),
 ]

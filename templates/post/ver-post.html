@@ -6,8 +6,13 @@
 {% endblock %}
 
 {% block header_imagen %}
-    {{ post.imagen_portada }}
+    {% if post.imagen_portada %}
+        {{ post.imagen_portada }}
+    {% endif %}
 {% endblock header_imagen %}
+
+{% block barra_busqueda %}
+{% endblock barra_busqueda %}
 
 {% block header_title %}
     {{ post.titulo }}

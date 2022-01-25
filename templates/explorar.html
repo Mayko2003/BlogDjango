@@ -64,23 +64,27 @@ Explorar
         </form>
     </div>
     <div class="col-sm-12 col-md-8">
-        <div class="row d-flex justify-content-center">
+        <div class="row justify-content-center">
             <div class="row">
                 {% if posts %}
                     {% for post in posts %}
-                        <div class="post-preview">
-                            <a href="ver-post/{{ post.slug }}">
-                                <h2 class="post-title">{{ post.titulo }}</h2>
-                                {% for categoria in post.categorias.all %}
-                                    <i class="fas fa-tag" style="color: cadetblue"></i>{{categoria.nombre}}
-                                {% endfor %}
-                                <h3 class="post-subtitle">{{ post.descripcion }}</h3>
-                            </a>
-                            <p class="post-meta">
-                                Escrito por
-                                <strong><a href="#!">{{ post.creador }}</a></strong>
-                                el {{ post.fecha_creacion }}
-                            </p>
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <div class="post-preview">
+                                    <a href="ver-post/{{ post.slug }}">
+                                        <h2 class="post-title">{{ post.titulo }}</h2>
+                                        {% for categoria in post.categorias.all %}
+                                            <i class="fas fa-tag" style="color: cadetblue"></i>{{categoria.nombre}}
+                                        {% endfor %}
+                                        <h3 class="post-subtitle">{{ post.descripcion }}</h3>
+                                    </a>
+                                    <p class="post-meta">
+                                        Escrito por
+                                        <strong><a href="#!">{{ post.creador }}</a></strong>
+                                        el {{ post.fecha_creacion }}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     {% endfor %}
                 {% else %}
@@ -92,6 +96,9 @@ Explorar
                         </div>
                     </div>
                 {% endif %}
+                <!-- Divider-->
+                <hr class="my-4" />
+                <!-- Pager-->
                 <div class="d-flex">
                     {% if page_obj.has_previous %}
                         <div class="me-auto mb-4">
@@ -103,7 +110,6 @@ Explorar
                             <a class="btn btn-primary text-uppercase" href="{{ request.get_full_path|next_page:page_obj.next_page_number }}#seccion-filtro">Siguiente→</a>
                         </div>
                     {% endif %}
-                    
                 </div>
             </div>
         </div>

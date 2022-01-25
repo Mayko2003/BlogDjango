@@ -3,7 +3,12 @@ from .models import *
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.core.paginator import Paginator
-from django.views.generic import *
+from django.views.generic import ListView,TemplateView,DetailView,CreateView,UpdateView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
+from django.core.exceptions import ImproperlyConfigured
+from .forms import *
 # Create your views here.
 
 class Home(ListView):
@@ -34,7 +39,7 @@ class Contact(TemplateView):
     template_name = 'contact.html'
 
 class VerPost(DetailView):
-    template_name = 'post.html'
+    template_name = 'post/ver-post.html'
     model = Post
     context_object_name = 'post'
 
@@ -73,3 +78,32 @@ class Explorar(ListView):
         context['categorias'] = Categoria.objects.all()
         context['selec_cats'] = self.request.GET.getlist('filter_cats')
         return context
+    
+    
+class CrearPost(LoginRequiredMixin, CreateView):
+    login_url = '/accounts/login'
+    model = Post
+    form_class = PostForm
+    template_name = 'post/crear-post.html'
+    success_url = reverse_lazy('blog_urls:home')
+    
+    def get_success_url(self):
+        if not self.success_url:
+            raise ImproperlyConfigured("No URL to redirect to. Provide a success_url.")
+        return str(self.success_url)
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.creador = self.request.user
+        instance.save()
+        return HttpResponseRedirect(self.get_success_url())
+        
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        return self.form_invalid(form)
+
+
+    
+    

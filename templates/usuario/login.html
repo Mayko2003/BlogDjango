@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block titulo %}
+    Iniciar Sesion
+{% endblock titulo %}
+
+{% block main %}
+
+    <div class="container mb-4" >
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form method="post" id="form-login">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" class="btn btn-success" value="Iniciar Sesion">
+                </form>
+            </div>
+        </div>
+    <div>
+
+{% endblock %}

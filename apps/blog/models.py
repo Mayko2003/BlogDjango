@@ -1,5 +1,8 @@
 from django.db import models
 from ckeditor.fields import RichTextField
+from django.utils.crypto import get_random_string
+from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 # Create your models here.
 
 
@@ -21,28 +24,27 @@ class Categoria(models.Model):
         return self.nombre
 
 
-class Usuario(models.Model):
+class Usuario(AbstractUser):
     id = models.AutoField(primary_key=True)
-    nombre_usuario = models.CharField(
-        'Nombre de usuario', max_length=100, unique=True, null=False, blank=False)
-    nombres = models.CharField(
-        'Nombres', max_length=100, null=False, blank=False)
-    apellidos = models.CharField(
-        'Apellidos', max_length=100, null=False, blank=False)
+    username = models.CharField(
+        'Nombre de usuario', max_length=150, unique=True, null=False, blank=False)
+    first_name = models.CharField(
+        'Nombres', max_length=150, null=False, blank=False)
+    last_name = models.CharField(
+        'Apellidos', max_length=150, null=False, blank=False)
     email = models.EmailField(
-        'Email', max_length=100, unique=True, null=False, blank=False)
-    estado = models.BooleanField('Activo/No Activo', default=True)
+        'Email', max_length=150, unique=True, null=False, blank=False)
     fecha_creacion = models.DateTimeField(
-        'Fecha de creacion', auto_now=False, auto_now_add=True)
-
+        'Fecha de creacion',auto_now=False, auto_now_add=True)
+    
     class Meta:
         verbose_name = 'Usuario'
         verbose_name_plural = 'Usuarios'
         db_table = 'usuarios'
-        ordering = ['nombre_usuario']
+        ordering = ['username']
 
     def __str__(self):
-        return self.nombre_usuario
+        return self.username
 
 
 class Post(models.Model):
@@ -53,7 +55,7 @@ class Post(models.Model):
     descripcion = models.CharField(
         'Descripcion', max_length=150, blank=False, null=False)
     imagen_portada = models.URLField(
-        'Imagen de Portada', max_length=255, blank=False, null=False)
+        'Imagen de Portada', max_length=255, blank=True, null=True)
     creador = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     categorias = models.ManyToManyField(Categoria)
     estado = models.BooleanField('Publicado/No Publicado', default=True)
@@ -61,6 +63,13 @@ class Post(models.Model):
         'Fecha de Creacion', blank=False, null=False, auto_now_add=True, auto_now=False)
     contenido = RichTextField('Contenido')
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = get_random_string(length=11)
+            while Post.objects.filter(slug=self.slug):
+                self.slug = get_random_string(11)
+        super().save(self, *args, **kwargs)
+    
     class Meta:
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'

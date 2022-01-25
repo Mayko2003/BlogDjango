@@ -25,8 +25,8 @@ class CategoriaAdmin(ImportExportActionModelAdmin, ImportExportModelAdmin, admin
     resource_class = CategoriaResource
 
 class UsuarioAdmin(ImportExportActionModelAdmin, ImportExportModelAdmin, admin.ModelAdmin):
-    search_fields = ['nombre_usuario', 'nombres', 'apellidos', 'email']
-    list_display = ['nombre_usuario', 'nombres', 'apellidos', 'email', 'estado', 'fecha_creacion']
+    search_fields = ['username', 'first_name', 'last_name', 'email']
+    list_display = ['username', 'first_name', 'last_name', 'email', 'is_active', 'fecha_creacion']
     resource_class = UsuarioResource
 
 class PostAdmin(ImportExportActionModelAdmin, ImportExportModelAdmin, admin.ModelAdmin):
